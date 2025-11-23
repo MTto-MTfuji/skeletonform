@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 
+{% block meta %}
+<meta name="description" content="Skeleton Form Analysisは、スポーツやリハビリのフォームをAI骨格解析で可視化するクラウドサービスです。アップロードするだけで骨格動画とオーバーレイ動画を生成し、動作改善をサポートします。">
+<meta name="keywords" content="フォーム解析,骨格解析AI,スイング分析,リハビリ姿勢分析,スポーツテック">
+<meta property="og:title" content="AI骨格解析フォームチェック | Skeleton Form Analysis">
+<meta property="og:description" content="動画をアップロードするだけで骨格可視化。スイングやリハビリの動きをAIが解析し、改善ポイントを見つけます。">
+<meta property="og:url" content="https://skeletonform.com/">
+<meta property="og:image" content="https://skeletonform.com/static/img/overlay_view_bg.jpg">
+{% endblock %}
+
 {% block head %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"></script>
