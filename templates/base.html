@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ja" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Skeleton Form Analysis{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Zen Kaku Gothic New"', '"Roboto"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9', // Sky Blue
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        },
+                        accent: '#f43f5e', // Rose
+                        dark: '#1e293b',
+                    },
+                    letterSpacing: {
+                        tighter: '-0.05em',
+                        tight: '-0.025em',
+                        normal: '0em',
+                        wide: '0.025em',
+                        wider: '0.05em',
+                        widest: '0.1em',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Zen Kaku Gothic New', 'Roboto', sans-serif;
+            font-feature-settings: "palt";
+        }
+        /* Three.js Background Canvas */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body class="min-h-screen flex flex-col text-slate-800 relative tracking-wide bg-white">
+    <!-- Three.js 背景 -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Bold Header -->
+    <header class="fixed top-0 w-full z-50 transition-all duration-300" id="main-header">
+        <div class="absolute inset-0 bg-white/90 backdrop-blur-md border-b border-gray-200/50 opacity-0 transition-opacity duration-300" id="header-bg"></div>
+        <div class="container mx-auto px-6 py-6 relative flex justify-between items-center">
+            <a href="/" class="group flex items-center gap-4 relative z-10 max-w-[70%]">
+                <div class="flex flex-col">
+                    <span class="text-base md:text-2xl font-black text-slate-900 leading-none tracking-tight mix-blend-overlay group-hover:text-brand-600 transition-colors whitespace-nowrap">AI姿勢推定サイト</span>
+                    <div class="flex items-center gap-2 mt-1">
+                        <span class="w-6 md:w-8 h-[1px] bg-slate-400"></span>
+                        <span class="text-[8px] md:text-[10px] font-bold text-slate-500 leading-none tracking-[0.3em] uppercase whitespace-nowrap overflow-hidden text-ellipsis">Skeleton Form Analysis</span>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex relative z-10 items-center gap-4">
+                <a href="/" class="relative overflow-hidden group bg-slate-900 text-white px-8 py-3 rounded-full font-bold text-sm shadow-lg shadow-slate-900/20 transition-all duration-300 hover:scale-105 hover:shadow-slate-900/40 block">
+                    <!-- Gradient Background (Hidden by default, visible on hover) -->
+                    <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-brand-500 to-brand-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <!-- Content -->
+                    <div class="relative z-10 flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        TOP
+                    </div>
+                </a>
+                <a href="/contact" class="text-slate-500 hover:text-slate-900 font-bold text-sm transition-colors whitespace-nowrap">
+                    お問い合わせ
+                </a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden relative z-50 p-2 text-slate-900 focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="fixed inset-0 bg-white/95 backdrop-blur-xl z-40 transform translate-x-full transition-transform duration-300 flex flex-col justify-center items-center gap-8 md:hidden">
+            <a href="/" class="text-2xl font-bold text-slate-900 hover:text-brand-600 transition-colors">TOP</a>
+            <a href="/upload" class="text-2xl font-bold text-slate-900 hover:text-brand-600 transition-colors">解析をスタート</a>
+            <a href="/contact" class="text-2xl font-bold text-slate-900 hover:text-brand-600 transition-colors">お問い合わせ</a>
+            <div class="flex flex-col items-center gap-4 mt-8 border-t border-slate-200 pt-8 w-1/2">
+                <a href="/terms" class="text-sm font-medium text-slate-500">利用規約</a>
+                <a href="/privacy" class="text-sm font-medium text-slate-500">プライバシーポリシー</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Wrapper with Padding for Fixed Header -->
+    <main class="flex-grow container mx-auto px-4 pt-32 pb-12 relative z-10">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-white/90 border-t border-gray-200 py-12 mt-auto backdrop-blur-sm relative z-10">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2 opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
+                <div class="w-6 h-6 bg-slate-900 rounded flex items-center justify-center text-white text-xs">S</div>
+                <span class="font-bold text-sm">Skeleton Form Analysis</span>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="/contact" class="text-slate-500 hover:text-brand-600 text-xs font-medium transition-colors">お問い合わせ</a>
+                <a href="/terms" class="text-slate-500 hover:text-brand-600 text-xs font-medium transition-colors">利用規約</a>
+                <a href="/privacy" class="text-slate-500 hover:text-brand-600 text-xs font-medium transition-colors">プライバシーポリシー</a>
+                <div class="text-slate-400 text-xs font-medium tracking-wider">
+                    &copy; 2025 All Rights Reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Three.js Background Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('bg-canvas');
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+
+            // Create Abstract Geometric Shapes (Masterpiece Design)
+            const geometry = new THREE.IcosahedronGeometry(1, 1);
+            const material = new THREE.MeshBasicMaterial({ 
+                color: 0x0ea5e9, // Brand Blue
+                wireframe: true,
+                transparent: true,
+                opacity: 0.1
+            });
+
+            const shapes = [];
+            // Generate floating shapes
+            for (let i = 0; i < 15; i++) {
+                const mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(
+                    (Math.random() - 0.5) * 15,
+                    (Math.random() - 0.5) * 10,
+                    (Math.random() - 0.5) * 10
+                );
+                mesh.scale.setScalar(Math.random() * 2 + 0.5);
+                mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+                
+                // Add custom properties for animation
+                mesh.userData = {
+                    rotationSpeed: (Math.random() - 0.5) * 0.002,
+                    floatSpeed: (Math.random() * 0.002) + 0.001,
+                    initialY: mesh.position.y
+                };
+                
+                scene.add(mesh);
+                shapes.push(mesh);
+            }
+
+            // Add subtle particles
+            const pGeo = new THREE.BufferGeometry();
+            const pCount = 100;
+            const pPos = new Float32Array(pCount * 3);
+            for(let i=0; i<pCount*3; i++) {
+                pPos[i] = (Math.random() - 0.5) * 20;
+            }
+            pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+            const pMat = new THREE.PointsMaterial({
+                size: 0.03,
+                color: 0x64748b, // Slate-500
+                transparent: true,
+                opacity: 0.4
+            });
+            const particles = new THREE.Points(pGeo, pMat);
+            scene.add(particles);
+
+            // Mouse Interaction
+            let mouseX = 0;
+            let mouseY = 0;
+            let targetX = 0;
+            let targetY = 0;
+
+            const windowHalfX = window.innerWidth / 2;
+            const windowHalfY = window.innerHeight / 2;
+
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX - windowHalfX) / 100;
+                mouseY = (event.clientY - windowHalfY) / 100;
+            });
+
+            // Animation Loop
+            const clock = new THREE.Clock();
+
+            const animate = () => {
+                requestAnimationFrame(animate);
+                const time = clock.getElapsedTime();
+
+                targetX = mouseX * 0.5;
+                targetY = mouseY * 0.5;
+
+                // Smooth camera movement
+                camera.position.x += (targetX - camera.position.x) * 0.05;
+                camera.position.y += (-targetY - camera.position.y) * 0.05;
+                camera.lookAt(scene.position);
+
+                // Animate shapes
+                shapes.forEach((mesh, i) => {
+                    mesh.rotation.x += mesh.userData.rotationSpeed;
+                    mesh.rotation.y += mesh.userData.rotationSpeed;
+                    // Floating effect
+                    mesh.position.y = mesh.userData.initialY + Math.sin(time * mesh.userData.floatSpeed + i) * 0.5;
+                });
+
+                // Rotate particles slowly
+                particles.rotation.y = time * 0.05;
+
+                renderer.render(scene, camera);
+            };
+
+            animate();
+
+            // Handle Resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        });
+
+        // Mobile Menu Logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                const isOpen = !mobileMenu.classList.contains('translate-x-full');
+                if (isOpen) {
+                    mobileMenu.classList.add('translate-x-full');
+                    // Reset icon to hamburger
+                    mobileMenuBtn.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>';
+                } else {
+                    mobileMenu.classList.remove('translate-x-full');
+                    // Change icon to close (X)
+                    mobileMenuBtn.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+                }
+            });
+
+            // Close menu when clicking links
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('translate-x-full');
+                    mobileMenuBtn.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>';
+                });
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,334 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"></script>
+<style>
+    .feature-parallax {
+        will-change: transform;
+    }
+    
+    /* Modern Editorial Number Design */
+    .feature-number-modern {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 900;
+        font-size: 8rem;
+        line-height: 1;
+        color: #0f172a; /* slate-900 (black) */
+        position: absolute;
+        z-index: 0;
+        opacity: 0.8;
+    }
+
+    .feature-content {
+        position: relative;
+        z-index: 10;
+    }
+
+    .use-case-card {
+        height: 300px;
+        transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        overflow: hidden;
+    }
+    
+    @media (min-width: 768px) {
+        .use-case-card {
+            height: 400px;
+        }
+    }
+
+    .use-case-card:hover {
+        transform: scale(1.02);
+    }
+
+    .use-case-card:hover .use-case-img {
+        transform: scale(1.1);
+    }
+
+    .use-case-img {
+        transition: transform 0.7s ease-out;
+    }
+    
+    .scrolling-text {
+        animation: scroll 30s linear infinite;
+    }
+
+    @keyframes scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="overflow-hidden relative">
+    <!-- Hero Section -->
+    <div class="relative min-h-[60vh] md:min-h-[80vh] flex items-center justify-center mb-10 md:mb-20 pt-12 md:pt-0">
+        <div class="text-center max-w-5xl mx-auto px-4 relative z-10">
+            <div class="gsap-hero-text opacity-0 translate-y-10">
+                <h1 class="text-4xl md:text-7xl font-black mb-6 md:mb-8 tracking-tight leading-tight text-slate-900 drop-shadow-sm">
+                    フォームを<span class="text-brand-600">可視化</span>する。<br>
+                    <span class="text-2xl md:text-6xl mt-2 block text-slate-800">骨格検出で、新たな視点を。</span>
+                </h1>
+            </div>
+            
+            <p class="gsap-hero-text opacity-0 translate-y-10 text-slate-600 text-base md:text-xl max-w-3xl mx-auto leading-relaxed mb-8 md:mb-12 font-medium">
+                動画をアップロードするだけで、AIが骨格の動きを自動抽出。<br class="hidden md:inline">
+                客観的なデータとして可視化し、あなたのフォームチェックをサポートします。
+            </p>
+            
+            <div class="gsap-hero-text opacity-0 translate-y-10 flex flex-col sm:flex-row justify-center items-center gap-4 md:gap-6">
+                <a href="/upload" class="group relative inline-flex items-center justify-center px-8 md:px-12 py-4 md:py-6 font-bold text-white transition-all duration-200 bg-slate-900 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-900 hover:bg-brand-600 hover:scale-105 hover:shadow-[0_0_40px_-10px_rgba(14,165,233,0.5)] w-full sm:w-auto">
+                    <span class="mr-3 text-base md:text-lg">解析をスタート</span>
+                    <!-- Arrow Icon -->
+                    <svg class="w-5 h-5 md:w-6 md:h-6 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </a>
+                <a href="#features" class="text-slate-600 hover:text-slate-900 font-medium flex items-center gap-2 transition-colors bg-white/50 px-6 py-3 rounded-full backdrop-blur-sm hover:bg-white/80 w-full sm:w-auto justify-center">
+                    <span>機能を見る</span>
+                    <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Marquee Text -->
+    <div class="relative w-full overflow-hidden py-4 md:py-8 bg-white/90 backdrop-blur-sm border-y border-gray-100 -rotate-1 mb-20 md:mb-32 transform origin-left shadow-sm z-10">
+        <div class="flex whitespace-nowrap scrolling-text items-center">
+            <!-- Marquee Content Repeated -->
+            {% for i in range(4) %}
+            <div class="flex items-center gap-6 md:gap-12 px-4 md:px-8">
+                <span class="text-2xl md:text-4xl font-black text-slate-300">VISUALIZATION</span>
+                <!-- Geometric Icon -->
+                <div class="w-5 h-5 md:w-8 md:h-8 border-4 border-brand-500 rounded-full"></div>
+                <span class="text-2xl md:text-4xl font-black text-slate-800">SKELETON VIEW</span>
+                <!-- Geometric Icon -->
+                <div class="w-5 h-5 md:w-8 md:h-8 bg-slate-300 transform rotate-45"></div>
+                <span class="text-2xl md:text-4xl font-black text-slate-300">FORM CHECK</span>
+                <!-- Geometric Icon -->
+                <div class="w-5 h-5 md:w-8 md:h-8 border-4 border-slate-800"></div>
+                <span class="text-2xl md:text-4xl font-black text-slate-800">OBJECTIVE DATA</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Use Cases Section -->
+    <div class="max-w-7xl mx-auto px-6 mb-32 relative z-10">
+        <div class="text-center mb-16">
+            <span class="text-brand-600 font-bold tracking-widest uppercase text-sm block mb-2">Use Cases</span>
+            <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">活用シーン</h2>
+            <p class="text-slate-500 max-w-2xl mx-auto text-lg leading-relaxed">
+                スポーツから医療まで、動きの可視化が新たな気づきを与えます。
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Case 1: Baseball -->
+            <div class="use-case-card rounded-[2rem] relative group cursor-pointer gsap-fade-up">
+                <img src="/static/img/usecase/baseball.jpg" alt="Baseball" class="use-case-img absolute inset-0 w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div class="absolute bottom-0 left-0 w-full p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform">
+                    <div class="w-10 h-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center mb-4 text-white">
+                        <!-- Simple Geometric Icon -->
+                        <div class="w-4 h-4 bg-brand-500 rounded-full"></div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2">投球・打撃フォーム</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity delay-100">
+                        肘の位置や体の開きを可視化。自分の感覚と実際の動きのズレを確認できます。
+                    </p>
+                </div>
+            </div>
+
+            <!-- Case 2: Golf -->
+            <div class="use-case-card rounded-[2rem] relative group cursor-pointer gsap-fade-up" style="transition-delay: 0.1s;">
+                <img src="/static/img/usecase/golf.jpg" alt="Golf" class="use-case-img absolute inset-0 w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1535131749006-b7f58c99034b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div class="absolute bottom-0 left-0 w-full p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform">
+                     <div class="w-10 h-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center mb-4 text-white">
+                        <!-- Simple Geometric Icon -->
+                        <div class="w-4 h-4 bg-green-500 rounded-full"></div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2">ゴルフスイング</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity delay-100">
+                        スイングの軌道を客観的に把握。動画と比較することで、フォームの修正箇所を発見しやすくなります。
+                    </p>
+                </div>
+            </div>
+
+            <!-- Case 3: Rehabilitation -->
+            <div class="use-case-card rounded-[2rem] relative group cursor-pointer gsap-fade-up" style="transition-delay: 0.2s;">
+                <img src="/static/img/usecase/rehab.jpg" alt="Rehabilitation" class="use-case-img absolute inset-0 w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80'">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div class="absolute bottom-0 left-0 w-full p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform">
+                     <div class="w-10 h-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-full flex items-center justify-center mb-4 text-white">
+                        <!-- Simple Geometric Icon -->
+                        <div class="w-4 h-4 bg-pink-500 rounded-full"></div>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2">リハビリ・歩行分析</h3>
+                    <p class="text-slate-300 text-sm leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity delay-100">
+                        歩行時の姿勢を記録。定期的に確認することで、回復の経過を視覚的に捉えられます。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section (Redesigned: Modern Editorial) -->
+    <div id="features" class="bg-slate-50 py-16 md:py-32 relative overflow-hidden z-10">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            
+            <!-- Feature 01 -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-24 md:mb-40 feature-parallax">
+                <div class="lg:col-span-5 order-2 lg:order-1 relative">
+                     <div class="feature-number-modern -top-16 -left-4 md:-top-24 md:-left-10 text-[5rem] md:text-[8rem] select-none">01</div>
+                     <div class="feature-content pt-10">
+                        <h3 class="text-3xl md:text-4xl font-black text-slate-900 mb-6 leading-tight">
+                            Precision<br>Tracking.
+                        </h3>
+                        <p class="text-slate-600 text-base md:text-lg leading-relaxed mb-8 font-medium">
+                            33箇所の関節ポイントを自動検出。<br>
+                            肉眼では捉えきれない細かな動作も、AIが逃さずトラッキングします。
+                        </p>
+                        <div class="flex items-center gap-4 border-t border-slate-200 pt-6">
+                            <div class="flex flex-col">
+                                <span class="text-3xl font-black text-brand-600">33</span>
+                                <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">Keypoints</span>
+                            </div>
+                            <div class="h-8 w-px bg-slate-200 mx-2"></div>
+                             <div class="flex flex-col">
+                                <span class="text-3xl font-black text-brand-600">100%</span>
+                                <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">Automated</span>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+                <div class="lg:col-span-7 order-1 lg:order-2">
+                    <div class="relative rounded-[2rem] overflow-hidden shadow-2xl group bg-slate-100 flex items-center justify-center h-[200px] md:h-[500px]">
+                        <img src="/static/img/usecase/kaibo.jpg" alt="Precision Tracking" class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-slate-900/10 group-hover:bg-slate-900/0 transition-colors duration-500 pointer-events-none"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 02 -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-40 feature-parallax">
+                <div class="lg:col-span-7 relative">
+                    <div class="relative rounded-[2rem] overflow-hidden shadow-2xl group bg-slate-100 flex items-center justify-center h-[200px] md:h-[500px]">
+                        <img src="/static/img/usecase/speed.jpg" alt="Instant Feedback" class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-slate-900/10 group-hover:bg-slate-900/0 transition-colors duration-500 pointer-events-none"></div>
+                    </div>
+                </div>
+                <div class="lg:col-span-5 relative">
+                     <div class="feature-number-modern -top-24 -right-10 select-none text-right w-full">02</div>
+                     <div class="feature-content pt-10 text-right lg:text-left">
+                        <h3 class="text-4xl font-black text-slate-900 mb-6 leading-tight lg:ml-auto">
+                            Instant<br>Feedback.
+                        </h3>
+                        <p class="text-slate-600 text-lg leading-relaxed mb-8 font-medium lg:ml-auto">
+                            アップロードから解析まで、待ち時間を最小限に。<br>
+                            現場ですぐに確認できるスピードが、上達を加速させます。
+                        </p>
+                        <div class="flex items-center gap-4 justify-end lg:justify-start border-t border-slate-200 pt-6">
+                            <div class="w-12 h-12 border-2 border-slate-900 rounded-full flex items-center justify-center">
+                                <!-- Minimal Clock Icon -->
+                                <div class="w-1 h-4 bg-slate-900 rounded-full relative top-1"></div>
+                            </div>
+                            <span class="text-sm font-bold text-slate-900 uppercase tracking-wide">Real-time Processing</span>
+                        </div>
+                     </div>
+                </div>
+            </div>
+
+            <!-- Feature 03 -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center feature-parallax">
+                <div class="lg:col-span-5 order-2 lg:order-1 relative">
+                     <div class="feature-number-modern -top-16 -left-4 md:-top-24 md:-left-10 text-[5rem] md:text-[8rem] select-none">03</div>
+                     <div class="feature-content pt-10">
+                        <h3 class="text-3xl md:text-4xl font-black text-slate-900 mb-6 leading-tight">
+                            Multi<br>Device.
+                        </h3>
+                        <p class="text-slate-600 text-base md:text-lg leading-relaxed mb-8 font-medium">
+                            PC、スマホ、タブレット。場所を選ばずアクセス可能。<br>
+                            専用アプリ不要で、ブラウザひとつで完結します。
+                        </p>
+                         <div class="flex items-center gap-4 border-t border-slate-200 pt-6">
+                            <div class="flex gap-2">
+                                <div class="w-8 h-5 border-2 border-slate-400 rounded-sm"></div> <!-- PC Icon -->
+                                <div class="w-4 h-6 border-2 border-slate-400 rounded-sm"></div> <!-- Mobile Icon -->
+                            </div>
+                            <span class="text-sm font-bold text-slate-500 uppercase tracking-wide">Browser Based</span>
+                        </div>
+                     </div>
+                </div>
+                <div class="lg:col-span-7 order-1 lg:order-2">
+                    <div class="relative rounded-[2rem] overflow-hidden shadow-2xl group bg-slate-100 flex items-center justify-center h-[200px] md:h-[500px]">
+                        <!-- Updated Image: rehab.png -->
+                        <img src="/static/img/usecase/rehab.png" alt="Multi Device" class="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-slate-900/10 group-hover:bg-slate-900/0 transition-colors duration-500 pointer-events-none"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="text-center py-24 px-4 relative z-10">
+        <h2 class="text-4xl md:text-6xl font-black text-slate-900 mb-8 tracking-tight">
+            Ready to <span class="text-brand-600">Start?</span>
+        </h2>
+        <p class="text-slate-500 mb-12 text-lg">
+            あなたの動画で、今すぐ試してみましょう。
+        </p>
+        <a href="/upload" class="inline-flex items-center gap-3 bg-slate-900 text-white px-12 py-6 rounded-full font-bold text-xl shadow-2xl shadow-slate-900/30 transition-all hover:bg-brand-600 hover:scale-105 hover:shadow-[0_20px_50px_-10px_rgba(14,165,233,0.6)]">
+            <span>無料で解析する</span>
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+        </a>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // GSAP Setup
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.to(".gsap-hero-text", {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            stagger: 0.2,
+            ease: "power3.out"
+        });
+
+        gsap.utils.toArray('.gsap-fade-up').forEach(element => {
+            gsap.from(element, {
+                scrollTrigger: {
+                    trigger: element,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 40,
+                opacity: 0,
+                duration: 0.8,
+                ease: "power3.out"
+            });
+        });
+
+        // Parallax effect for feature sections
+        gsap.utils.toArray('.feature-parallax').forEach((element, i) => {
+            gsap.from(element, {
+                scrollTrigger: {
+                    trigger: element,
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 60,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out",
+                delay: i * 0.1
+            });
+        });
+    });
+</script>
+{% endblock %}

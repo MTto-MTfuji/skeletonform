@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+        <div>
+            <div class="flex items-center gap-3 mb-2">
+                <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold tracking-wide">SUCCESS</span>
+                <p class="text-slate-400 text-xs font-mono uppercase tracking-wider">ID: {{ filename.split('_')[0] }}</p>
+            </div>
+            <h1 class="text-3xl font-bold text-slate-900">解析結果レポート</h1>
+        </div>
+        <a href="/" class="bg-white hover:bg-gray-50 text-slate-700 px-6 py-3 rounded-xl font-bold text-sm border border-gray-200 shadow-sm transition-all hover:-translate-y-0.5 flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            TOPへ戻る
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Skeleton Only -->
+        <div class="bg-white rounded-2xl p-1 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+            <div class="p-5 pb-2 flex justify-between items-center">
+                <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <div class="w-2 h-8 bg-slate-900 rounded-full"></div>
+                    骨格モーション
+                </h2>
+                <a href="/download/{{ skeleton_video.split('/')[-1] }}" class="text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-900 hover:text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    ダウンロード
+                </a>
+            </div>
+            <div class="bg-slate-900 rounded-xl overflow-hidden relative aspect-video m-2 mt-0">
+                <video id="video-skeleton" src="/static/{{ skeleton_video }}" controls class="w-full h-full object-contain" playsinline></video>
+            </div>
+            <p class="text-slate-400 text-xs text-center py-3 font-medium">SKELETON VIEW</p>
+        </div>
+
+        <!-- Overlay -->
+        <div class="bg-white rounded-2xl p-1 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+            <div class="p-5 pb-2 flex justify-between items-center">
+                <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <div class="w-2 h-8 bg-brand-500 rounded-full"></div>
+                    オーバーレイ解析
+                </h2>
+                <a href="/download/{{ overlay_video.split('/')[-1] }}" class="text-xs font-bold bg-slate-100 text-slate-600 hover:bg-brand-600 hover:text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    ダウンロード
+                </a>
+            </div>
+            <div class="bg-slate-900 rounded-xl overflow-hidden relative aspect-video m-2 mt-0">
+                <video id="video-overlay" src="/static/{{ overlay_video }}" controls class="w-full h-full object-contain" playsinline></video>
+            </div>
+            <p class="text-slate-400 text-xs text-center py-3 font-medium">OVERLAY VIEW</p>
+        </div>
+    </div>
+
+    <!-- Sync Control -->
+    <div class="mt-8 bg-white rounded-2xl p-6 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] border border-gray-100 flex flex-col items-center">
+        <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mb-4">SYNC CONTROL</p>
+        <div class="flex gap-3">
+            <button id="sync-play" class="bg-slate-900 text-white hover:bg-slate-800 px-8 py-3 rounded-xl font-bold transition-all hover:-translate-y-0.5 hover:shadow-lg shadow-slate-900/20 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                同期再生
+            </button>
+            <button id="sync-pause" class="bg-white text-slate-700 hover:bg-gray-50 px-6 py-3 rounded-xl font-bold border border-gray-200 transition-all hover:-translate-y-0.5 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                一時停止
+            </button>
+            <button id="sync-reset" class="bg-white text-slate-700 hover:bg-gray-50 px-6 py-3 rounded-xl font-bold border border-gray-200 transition-all hover:-translate-y-0.5 group" title="最初に戻る">
+                <svg class="w-5 h-5 text-slate-400 group-hover:text-slate-700 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const vSkeleton = document.getElementById('video-skeleton');
+    const vOverlay = document.getElementById('video-overlay');
+    const btnPlay = document.getElementById('sync-play');
+    const btnPause = document.getElementById('sync-pause');
+    const btnReset = document.getElementById('sync-reset');
+
+    // 同期再生ロジック
+    let isSyncing = false;
+
+    function syncVideos(action) {
+        if (action === 'play') {
+            vSkeleton.play();
+            vOverlay.play();
+        } else if (action === 'pause') {
+            vSkeleton.pause();
+            vOverlay.pause();
+        } else if (action === 'reset') {
+            vSkeleton.currentTime = 0;
+            vOverlay.currentTime = 0;
+        }
+    }
+
+    btnPlay.addEventListener('click', () => syncVideos('play'));
+    btnPause.addEventListener('click', () => syncVideos('pause'));
+    btnReset.addEventListener('click', () => syncVideos('reset'));
+
+    // 簡易的なシーク同期（片方のシークバーを動かしたとき）
+    vSkeleton.addEventListener('seeked', () => {
+        if (!isSyncing) {
+            isSyncing = true;
+            vOverlay.currentTime = vSkeleton.currentTime;
+            setTimeout(() => isSyncing = false, 50);
+        }
+    });
+
+    vOverlay.addEventListener('seeked', () => {
+        if (!isSyncing) {
+            isSyncing = true;
+            vSkeleton.currentTime = vOverlay.currentTime;
+            setTimeout(() => isSyncing = false, 50);
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}プライバシーポリシー - Skeleton Form Analysis{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-16 px-6">
+    <h1 class="text-4xl font-bold text-slate-900 mb-12 border-b pb-6">プライバシーポリシー</h1>
+    
+    <div class="prose prose-lg text-slate-700 max-w-none">
+        <p class="mb-8">
+            Skeleton Form Analysis（以下、「当サイト」といいます。）は、本ウェブサイト上で提供するサービス（以下、「本サービス」といいます。）における、ユーザーの個人情報の取扱いについて、以下のとおりプライバシーポリシー（以下、「本ポリシー」といいます。）を定めます。
+        </p>
+
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">第1条（個人情報）</h2>
+            <p>
+                「個人情報」とは、個人情報保護法にいう「個人情報」を指すものとし、生存する個人に関する情報であって、当該情報に含まれる氏名、生年月日、住所、電話番号、連絡先その他の記述等により特定の個人を識別できる情報（個人識別情報）を指します。
+            </p>
+        </section>
+
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">第2条（収集する情報）</h2>
+            <p>当サイトでは、サービスの利用に伴い、以下の情報を一時的に収集する場合があります。</p>
+            <ul class="list-disc pl-6 space-y-2 mt-4">
+                <li>アップロードされた動画データ</li>
+                <li>アクセスログ（IPアドレス、ブラウザの種類等）</li>
+            </ul>
+            <p class="mt-4 text-brand-600 font-bold bg-blue-50 p-4 rounded-lg">
+                ※アップロードされた動画データは、解析処理完了後、サーバーから自動的に削除されます。長期的な保存は行いません。
+            </p>
+        </section>
+
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">第3条（情報の利用目的）</h2>
+            <p>当サイトが個人情報を収集・利用する目的は、以下のとおりです。</p>
+            <ol class="list-decimal pl-6 space-y-2 mt-4">
+                <li>本サービスの提供・運営のため（動画の骨格解析等）</li>
+                <li>ユーザーからのお問い合わせに回答するため</li>
+                <li>利用規約に違反したユーザーや、不正・不当な目的でサービスを利用しようとするユーザーの特定をし、ご利用をお断りするため</li>
+            </ol>
+        </section>
+
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">第4条（利用目的の変更）</h2>
+            <p>
+                当サイトは、利用目的が変更前と関連性を有すると合理的に認められる場合に限り、個人情報の利用目的を変更するものとします。
+            </p>
+        </section>
+
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">第5条（個人情報の第三者提供）</h2>
+            <p>
+                当サイトは、あらかじめユーザーの同意を得ることなく、第三者に個人情報を提供することはありません。ただし、個人情報保護法その他の法令で認められる場合を除きます。
+            </p>
+        </section>
+
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">第6条（プライバシーポリシーの変更）</h2>
+            <p>
+                本ポリシーの内容は、法令その他本ポリシーに別段の定めのある事項を除いて、ユーザーに通知することなく、変更することができるものとします。
+                当サイトが別途定める場合を除いて、変更後のプライバシーポリシーは、本ウェブサイトに掲載したときから効力を生じるものとします。
+            </p>
+        </section>
+
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">第7条（お問い合わせ窓口）</h2>
+            <p>本ポリシーに関するお問い合わせは、当サイト管理者までお願いいたします。</p>
+            <div class="mt-4">
+                <a href="/contact" class="inline-flex items-center gap-2 text-brand-600 hover:text-brand-900 font-medium transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    お問い合わせフォームはこちら
+                </a>
+                <p class="mt-2 text-sm text-slate-500">
+                    または、以下のメールアドレスへ直接ご連絡ください。<br>
+                    <a href="mailto:skeletonformanalysis@gmail.com" class="hover:text-brand-600 transition-colors">skeletonformanalysis@gmail.com</a>
+                </p>
+            </div>
+        </section>
+    </div>
+</div>
+{% endblock %}
+
