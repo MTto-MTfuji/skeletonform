@@ -23,21 +23,7 @@ source .venv/bin/activate     # macOS / Linux
 pip install -r requirements.txt
 ```
 
-## 環境変数（例）
-```
-SMTP_SERVER=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your_account@gmail.com
-SMTP_PASSWORD=your_app_password
-MAX_UPLOAD_SIZE_MB=200
-UPLOAD_RETENTION_SECONDS=600
-RESULT_RETENTION_SECONDS=600
-```
 
-## 起動
-```bash
-python main.py
-```
 - PC とスマホを同じネットワークに接続し、`http://<PCのIP>:8000` にアクセスすればスマホからもテスト可能です。
 
 ## 今後の改善アイデア
